@@ -20,9 +20,14 @@ handler_class = news
 def get_news_response(message: Dict[str, str], bot_handler: Any) -> str:
 	content = message['content']
 	words = content.lower().split()
-	articles = requests.get('https://newsapi.org/v2/everything?q=' + words[2] + '&apiKey=142ba11e03d74ba38f859c785eee017f').json()
+	api_key = os.environ.get('NEWS_API_KEY')
+	if not api_key:
+		return "Error: NEWS_API_KEY environment variable is not set."
+	articles = requests.get('https://newsapi.org/v2/everything?q=' + words[2] + '&apiKey=' + api_key).json()
 	res = "" 
 	i = 1
+	if 'articles' not in articles:
+		return "Error: Could not retrieve articles."
 	for article in articles['articles'] :
 		res = res + article['title'] + "\n" + article['url'] + "\n\n"
 		i += 1
