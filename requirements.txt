@@ -1,7 +1,7 @@
 imdbpie==5.2.0
 lyricwikia==0.1.9
 PyDictionary==1.5.2
-pyenchant==2.0.0
+pyenchant==3.2.2
 RandomWords==0.2.1
 weather-api==0.0.4
 wit==4.3.0
