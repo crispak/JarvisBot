@@ -1,0 +1,3 @@
+## 2024-10-18 - Improved Empty States in Lists
+**Learning:** Returning a raw uninitialized variable or a blank UI for empty lists (like the todo list plugin) leads to a jarring user experience, and occasionally uncaught errors. Empty states are prime real-estate for providing helpful onboarding or call-to-actions.
+**Action:** Always provide a clear, actionable empty state message (e.g., "Your list is empty. Add a task with '...'") instead of rendering empty strings, index numbers, or letting components crash when data is undefined.
