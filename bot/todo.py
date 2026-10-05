@@ -33,12 +33,18 @@ def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
         return "todo initialized"
     if words[2] == "list":
         res = bot_handler.storage.get("list")
+        if not res or res.strip() == "":
+            return "Your todo list is empty. Add tasks using '@Jarvis todo add <activity>'!"
         val = ""
         values = res.split("~")
         i = 1
         for temp in values:
+            if temp == "":
+                continue
             val = val + str(i) + ". " + temp + "\n"
             i += 1
+        if val == "":
+            return "Your todo list is empty. Add tasks using '@Jarvis todo add <activity>'!"
         return val
     elif words[2] == "add":
         res = bot_handler.storage.get("list")
@@ -52,6 +58,8 @@ def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
         values = res.split("~")
         i = 1
         for temp in values:
+            if temp == "":
+                continue
             if i != index:
                 val = val + temp + "~"
             i += 1
