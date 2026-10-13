@@ -25,6 +25,11 @@ class JarvisBot(object):
             results.append(utils.HELP_MESSAGE)
 
         data = message["content"].split()
+
+        if not data:
+            bot_handler.send_reply(message, utils.HELP_MESSAGE)
+            return
+
         if(data[0] != "Jarvis"):
         	data.insert(0,"Jarvis")
         	message["content"] = "Jarvis " + message["content"]
