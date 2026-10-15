@@ -81,7 +81,7 @@ class JarvisBot(object):
             print(witAnalysis)
             temp = witAnalysis['entities']
             if temp.__len__() == 0:
-                results.append('Sorry :( I could not understatnd what you want to say. Try "@Jarvis help" to get detailed help ')
+                results.append('Sorry :( I could not understand what you want to say. Try `@Jarvis help` to get detailed help ')
             else:
                 trait = witAnalysis['entities']['intent'][0]['value']
                 if   trait == "hello":
@@ -89,37 +89,37 @@ class JarvisBot(object):
                 elif trait == "bye":
                     results.append("Good bye see you soon :)")
                 elif trait == "add-todo":
-                    results.append('To add a todo make a query as follows "@Jarvis todo add <task to add here>"')
+                    results.append('To add a todo make a query as follows `@Jarvis todo add <task to add here>`')
                 elif trait == "remove-todo":
-                    results.append('To remove a todo make a query as follows "@Jarvis todo remove <id of task to remove>"')
+                    results.append('To remove a todo make a query as follows `@Jarvis todo remove <id of task to remove>`')
                 elif trait == "lyrics":
-                    results.append('Loving song want to see its lyrics ? Make a query as follows "@Jarvis lyrics <composer name> <track name>')
+                    results.append('Loving song want to see its lyrics ? Make a query as follows `@Jarvis lyrics <composer name> <track name>`')
                 elif trait == "ssh":
-                    results.append('Want to connect to ssh a remote server ? Make a query as follows "@Jarvis ssh <user_name> <server_ip> <password> <command>')
+                    results.append('Want to connect to ssh a remote server ? Make a query as follows `@Jarvis ssh <user_name> <server_ip> <password> <command>`')
                 elif trait == "man":
-                    results.append('Need some help over usage of command ? make a query as follows "@Jarvis man <command>')
+                    results.append('Need some help over usage of command ? make a query as follows `@Jarvis man <command>`')
                 elif trait == "weather":
-                    results.append('To get detailed weather report make a query as follows "@Jarvis weather <city_name>"')
+                    results.append('To get detailed weather report make a query as follows `@Jarvis weather <city_name>`')
                 elif trait == "calculator":
-                    results.append('To start a calculator make a query as follows "@Jarvis calculator <computation_to_solve>')
+                    results.append('To start a calculator make a query as follows `@Jarvis calculator <computation_to_solve>`')
                 elif trait == "help":
-                    results.append('I think you are stuck try "@Jarvis help" to get detailed help about bot')
+                    results.append('I think you are stuck try `@Jarvis help` to get detailed help about bot')
                 elif trait == "list-todo":
-                    results.append('To get list of all todos make a query as follows "@Jarvis todo list"')
+                    results.append('To get list of all todos make a query as follows `@Jarvis todo list`')
                 elif trait == "movies":
-                    results.append('Want to get list of all time best movies or maybe details about the celebrity that you like most checkout "@Jarvis movies" ')
+                    results.append('Want to get list of all time best movies or maybe details about the celebrity that you like most checkout `@Jarvis movies` ')
                 elif trait == "scrabble":
-                    results.append('Want to play scrabble you are just a query away type "@Jarvis scrabble start" to start game')
+                    results.append('Want to play scrabble you are just a query away type `@Jarvis scrabble start` to start game')
                 elif trait == "sps":
-                    results.append('Want to play stone paper scissor you are just a query away type "@Jarvis sps start" to start game')
+                    results.append('Want to play stone paper scissor you are just a query away type `@Jarvis sps start` to start game')
                 elif trait == "hangman":
-                    results.append('Want to play hangman you are just a query away type "@Jarvis hangman start" to start game')
+                    results.append('Want to play hangman you are just a query away type `@Jarvis hangman start` to start game')
                 elif trait == "memory-game":
-                    results.append('Sharpen your memeory by playing some memeory games type "@Jarvis memory-game" to start game')
+                    results.append('Sharpen your memory by playing some memory games type `@Jarvis memory-game` to start game')
                 elif trait == "news":
-                    results.append('Get latest news from around the globe just type "@Jarvis news <keyword>"')
+                    results.append('Get latest news from around the globe just type `@Jarvis news <keyword>`')
                 elif trait == "cricket":
-                    results.append('To get scores of recent matches type "@Jarvis cricket"')
+                    results.append('To get scores of recent matches type `@Jarvis cricket`')
 
 
         new_content = ''
