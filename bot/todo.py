@@ -33,13 +33,17 @@ def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
         return "todo initialized"
     if words[2] == "list":
         res = bot_handler.storage.get("list")
+        if not res:
+            return "Your todo list is empty."
         val = ""
-        values = res.split("~")
+        values = [v for v in res.split("~") if v.strip()]
+        if not values:
+            return "Your todo list is empty."
         i = 1
         for temp in values:
             val = val + str(i) + ". " + temp + "\n"
             i += 1
-        return val
+        return val.strip()
     elif words[2] == "add":
         res = bot_handler.storage.get("list")
         res = res + " ".join(words[3::]) + "~"
