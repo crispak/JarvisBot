@@ -11,20 +11,6 @@ import re
 from converter import utils
 from typing import Any, Dict, List
 
-'''
-class todo(object):
-
-	def usage(self) -> str:
-		return "This plugin is a ToDo App"
-
-	def handle_message(self, message: Dict[str, str], bot_handler: Any) -> None:
-		bot_response = self.get_todo_response(message, bot_handler)
-		bot_handler.send_reply(message, bot_response)
-
-handler_class = todo
-'''
-
-
 def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message["content"]
     words = content.split()
@@ -33,27 +19,37 @@ def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
         return "todo initialized"
     if words[2] == "list":
         res = bot_handler.storage.get("list")
+        if not res:
+            return "Your todo list is empty."
+
+        values = [v for v in res.split("~") if v]
+        if not values:
+            return "Your todo list is empty."
+
         val = ""
-        values = res.split("~")
         i = 1
         for temp in values:
-            val = val + str(i) + ". " + temp + "\n"
+            val += str(i) + ". " + temp + "\n"
             i += 1
-        return val
+        return val.strip()
     elif words[2] == "add":
-        res = bot_handler.storage.get("list")
+        res = bot_handler.storage.get("list") or ""
         res = res + " ".join(words[3::]) + "~"
         bot_handler.storage.put("list", res)
         return "Added to list."
     elif words[2] == "remove":
-        index = int(words[3])
-        res = bot_handler.storage.get("list")
-        val = ""
-        values = res.split("~")
-        i = 1
-        for temp in values:
-            if i != index:
-                val = val + temp + "~"
-            i += 1
+        try:
+            index = int(words[3])
+        except (IndexError, ValueError):
+            return "Please provide a valid task number to remove."
+
+        res = bot_handler.storage.get("list") or ""
+        values = [v for v in res.split("~") if v]
+
+        if not (1 <= index <= len(values)):
+            return "Task number not found."
+
+        del values[index - 1]
+        val = "~".join(values) + "~" if values else ""
         bot_handler.storage.put("list", val)
         return "Removed from list."
