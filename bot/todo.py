@@ -28,32 +28,62 @@ handler_class = todo
 def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message["content"]
     words = content.split()
+
+    if len(words) < 3:
+        return "Please specify a todo command. Examples: `@Jarvis todo start`, `@Jarvis todo add <task>`, `@Jarvis todo list`, or `@Jarvis todo remove <task_number>`"
+
+    try:
+        res = bot_handler.storage.get("list")
+    except KeyError:
+        res = None
+
     if words[2] == "start":
         bot_handler.storage.put("list", "")
-        return "todo initialized"
+        return "Todo list initialized. Type `@Jarvis todo add <task>` to add a task."
+
+    if res is None and words[2] in ["list", "add", "remove"]:
+        return "Todo list not initialized. Type `@Jarvis todo start` to begin."
+
     if words[2] == "list":
-        res = bot_handler.storage.get("list")
+        if not res:
+            return "Your Todo list is empty. Add tasks using `@Jarvis todo add <task>`."
+
         val = ""
-        values = res.split("~")
-        i = 1
-        for temp in values:
-            val = val + str(i) + ". " + temp + "\n"
-            i += 1
-        return val
+        values = [t for t in res.split("~") if t.strip()]
+        if not values:
+            return "Your Todo list is empty. Add tasks using `@Jarvis todo add <task>`."
+
+        for i, temp in enumerate(values, 1):
+            val += str(i) + ". " + temp + "\n"
+        return val.strip()
+
     elif words[2] == "add":
-        res = bot_handler.storage.get("list")
-        res = res + " ".join(words[3::]) + "~"
+        task = " ".join(words[3:])
+        if not task.strip():
+             return "Please specify a task to add. Example: `@Jarvis todo add Buy milk`"
+        res = res + task + "~"
         bot_handler.storage.put("list", res)
-        return "Added to list."
+        return f"Added '{task}' to your list."
+
     elif words[2] == "remove":
-        index = int(words[3])
-        res = bot_handler.storage.get("list")
+        try:
+            index = int(words[3])
+        except (IndexError, ValueError):
+            return "Please specify a valid task number to remove. Example: `@Jarvis todo remove 1`"
+
+        values = [t for t in res.split("~") if t.strip()]
+
+        if index < 1 or index > len(values):
+            return f"Task number {index} not found. Type `@Jarvis todo list` to see your tasks."
+
+        removed_task = values[index - 1]
+
         val = ""
-        values = res.split("~")
-        i = 1
-        for temp in values:
+        for i, temp in enumerate(values, 1):
             if i != index:
                 val = val + temp + "~"
-            i += 1
+
         bot_handler.storage.put("list", val)
-        return "Removed from list."
+        return f"Removed '{removed_task}' from your list."
+    else:
+        return "Invalid todo command. Available commands: start, list, add, remove."
