@@ -28,28 +28,44 @@ handler_class = todo
 def get_todo_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message["content"]
     words = content.split()
+
+    if len(words) < 3:
+        return "Invalid command. Try `@Jarvis help`."
+
     if words[2] == "start":
         bot_handler.storage.put("list", "")
         return "todo initialized"
-    if words[2] == "list":
+
+    try:
         res = bot_handler.storage.get("list")
+    except KeyError:
+        return "Todo list is not initialized. Please type `@Jarvis todo start` first."
+
+    if words[2] == "list":
         val = ""
-        values = res.split("~")
+        values = [v for v in res.split("~") if v.strip()]
+        if not values:
+            return "Your todo list is currently empty."
         i = 1
         for temp in values:
             val = val + str(i) + ". " + temp + "\n"
             i += 1
-        return val
+        return val.strip()
     elif words[2] == "add":
-        res = bot_handler.storage.get("list")
+        if len(words) < 4:
+            return "Please specify a task to add."
         res = res + " ".join(words[3::]) + "~"
         bot_handler.storage.put("list", res)
         return "Added to list."
     elif words[2] == "remove":
-        index = int(words[3])
-        res = bot_handler.storage.get("list")
+        if len(words) < 4:
+            return "Please specify the item number to remove."
+        try:
+            index = int(words[3])
+        except ValueError:
+            return "Please provide a valid item number."
         val = ""
-        values = res.split("~")
+        values = [v for v in res.split("~") if v.strip()]
         i = 1
         for temp in values:
             if i != index:

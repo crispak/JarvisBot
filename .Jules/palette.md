@@ -1,0 +1,3 @@
+## 2024-10-23 - Backend Chatbot Uninitialized State UX
+**Learning:** Conversational chatbots that rely on stateful storage (like `todo` lists) can crash silently or return raw exceptions (e.g. `KeyError`) if users interact with them before initialization. This leads to a poor, confusing experience for end-users who don't know the exact order of commands required.
+**Action:** When developing stateful commands, proactively catch storage exceptions and return human-readable prompts that guide the user on exactly how to initialize the feature (e.g., "Todo list is not initialized. Please type `@Jarvis todo start` first."). Furthermore, handle empty states gracefully (e.g., "Your todo list is currently empty.") rather than printing confusing numbered empty bullets.
